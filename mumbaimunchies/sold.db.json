@@ -1,0 +1,14 @@
+[
+    {
+        "OrderID": "1",
+        "Name": "Kuldeep",
+        "snackName": "bean",
+        "Price": 100.0
+    },
+    {
+        "OrderID": "2",
+        "Name": "Kuldeep",
+        "snackName": "samosa",
+        "Price": 120.0
+    }
+]

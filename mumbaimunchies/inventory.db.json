@@ -1,0 +1,14 @@
+[
+    {
+        "snackId": "1",
+        "snackName": "bean",
+        "snackPrice": 100.0,
+        "snackAvailability": "yes"
+    },
+    {
+        "snackId": "2",
+        "snackName": "samosa",
+        "snackPrice": 120.0,
+        "snackAvailability": "no"
+    }
+]
