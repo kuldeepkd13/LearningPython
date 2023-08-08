@@ -1,0 +1,14 @@
+[
+    {
+        "dishId": "1",
+        "dishName": "Samosa",
+        "dishPrice": 30.0,
+        "dishAvailability": "yes"
+    },
+    {
+        "dishId": "2",
+        "dishName": "Tea",
+        "dishPrice": 15.0,
+        "dishAvailability": "yes"
+    }
+]
