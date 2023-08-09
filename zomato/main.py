@@ -92,7 +92,8 @@ def main():
         print("6: Trace a Order By Id")
         print("7: Update the Order")
         print("8: details of All Order")
-        print("9: Exit")
+        print("9: Filter By Order Status")
+        print("10: Exit")
         print("------------------------")
 
         user_input = input("Please Enter a Number:--")
@@ -239,7 +240,26 @@ def main():
                     print(f"Price:- {dish['Price']}")
                     print(f"Status:-{dish['Status']} ")
                     print("---------------------------------")
+
         elif user_input=="9":
+            inventory = read_inventory(order_filename)
+            if (len(inventory) == 0):
+                print("No Order")
+                print("---------------------------------")
+            else:
+                status = input("Enter the OrderStatus:-")
+                
+                filtered_data = filter(lambda item: item["Status"] == status , inventory)
+                filtered_data_list = list(filtered_data)
+                for dish in filtered_data_list:
+                    print("---------------------------------")
+                    print(f"Order id :- {dish['OrderID']}")
+                    print(f"Name:- {dish['Name']} ")
+                    print(f"Dish Name:- {dish['dishName']}")
+                    print(f"Price:- {dish['Price']}")
+                    print(f"Status:-{dish['Status']} ")
+                    print("---------------------------------")
+        elif user_input=="10":
             print("Thanks For Visting Zesty Zomato")
             print("----------------------------------")
             break
