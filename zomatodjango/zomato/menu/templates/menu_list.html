@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Menu List</title>
+</head>
+<body>
+    <h1>Menu List</h1>
+    <table>
+        <tr>
+            <th>DishID</th>
+            <th>DishName</th>
+            <th>Price</th>
+            <th>DishAvailability</th>
+        </tr>
+        {% for dish in menu_data %}
+           <tr>
+            <td>{{ dish.dishId }}</td>
+            <td>{{dish.dishName}}</td>
+            <td>{{ dish.dishPrice }}</td>
+            <td>{{dish.dishAvailability}}</td>
+           </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

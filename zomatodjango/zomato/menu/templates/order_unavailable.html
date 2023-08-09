@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Unavailable Dishes</title>
+</head>
+<body>
+    <h1>Unavailable Dishes</h1>
+    <p>The following dishes are currently unavailable:</p>
+    <ul>
+        {% for dish in unavailable_dishes %}
+            <li>{{ dish.dishName }} - Price: {{ dish.dishPrice }}</li>
+        {% endfor %}
+    </ul>
+    <p>Please choose other dishes or try again later.</p>
+</body>
+</html>

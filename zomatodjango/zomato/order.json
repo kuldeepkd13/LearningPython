@@ -1,0 +1,37 @@
+[
+    {
+        "OrderId": "1",
+        "CustomerName": "kd",
+        "dishName": "Tea",
+        "Price": 30.0,
+        "Status": "Ready for PickUp"
+    },
+    {
+        "OrderId": "2",
+        "CustomerName": "kuldeep",
+        "dishName": "Samosa",
+        "Price": 30.0,
+        "Status": "Ready for PickUp"
+    },
+    {
+        "OrderId": "3",
+        "CustomerName": "Rahul",
+        "dishName": "pizza",
+        "Price": 399.0,
+        "Status": "Delivered"
+    },
+    {
+        "OrderId": "4",
+        "CustomerName": "Rahul",
+        "dishName": "Tea",
+        "Price": 15.0,
+        "Status": "Preparing"
+    },
+    {
+        "OrderId": "5",
+        "CustomerName": "Rahul",
+        "dishName": "Samosa",
+        "Price": 30.0,
+        "Status": "Ready for PickUp"
+    }
+]
