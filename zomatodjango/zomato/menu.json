@@ -27,6 +27,6 @@
         "dishId": "5",
         "dishName": "Veg Dubble Whopper",
         "dishPrice": 40.0,
-        "dishAvailability": "yes"
+        "dishAvailability": "no"
     }
 ]

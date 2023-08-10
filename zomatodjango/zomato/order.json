@@ -1,7 +1,7 @@
 [
     {
         "OrderId": "1",
-        "CustomerName": "kd",
+        "CustomerName": "rohan",
         "dishName": "Tea",
         "Price": 30.0,
         "Status": "Ready"
@@ -22,14 +22,14 @@
     },
     {
         "OrderId": "4",
-        "CustomerName": "Rahul",
+        "CustomerName": "Rohit",
         "dishName": "Tea",
         "Price": 15.0,
         "Status": "Preparing"
     },
     {
         "OrderId": "5",
-        "CustomerName": "Rahul",
+        "CustomerName": "Deepak",
         "dishName": "Samosa",
         "Price": 30.0,
         "Status": "Ready"
@@ -43,7 +43,7 @@
     },
     {
         "OrderId": "7",
-        "CustomerName": "raman",
+        "CustomerName": "Raman",
         "dishName": "Veg Whopper",
         "Price": 129.0,
         "Status": "Preparing"
