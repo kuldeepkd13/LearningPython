@@ -40,51 +40,28 @@ def remove_dish(request, dishId):
     with open('menu.json') as menu_file:
         menu_data = json.load(menu_file)
     
-    # Find the dish with the specified dishId
-    removed_dish = None
-    for dish in menu_data:
-        if dish['dishId'] == dishId:
-            removed_dish = dish
-            break
-    
-    # If dish not found, raise Http404
-    if removed_dish is None:
-        raise Http404("Dish not found")
-    
     updated_menu_data = [dish for dish in menu_data if dish['dishId'] != dishId]
     
     with open('menu.json', 'w') as menu_file:
         json.dump(updated_menu_data, menu_file, indent=4)
     
-    return render(request, 'removed.html', {'dishId': dishId})
+    return redirect('menu_list')
 
 def update_dish(request, dishId):
-    with open('menu.json') as menu_file:
-        menu_data = json.load(menu_file)
+    if request.method == 'POST':
+        with open('menu.json') as menu_file:
+            menu_data = json.load(menu_file)
     
-    # Find the dish with the specified dishId
-    removed_dish = None
-    for dish in menu_data:
-        if dish['dishId'] == dishId:
-            removed_dish = dish
-            break
+        # Find the dish with the specified dishId
+        for dish in menu_data:
+            if dish['dishId'] == dishId:
+                dish['dishAvailability'] = 'yes' if dish['dishAvailability'] == 'no' else 'no'
+                break
     
-    # If dish not found, raise Http404
-    if removed_dish is None:
-        raise Http404("Dish not found")
+        with open('menu.json', 'w') as menu_file:
+            json.dump(menu_data, menu_file, indent=4)
     
-    for dish in menu_data:
-        if dish['dishId'] == dishId:
-            if dish['dishAvailability'] == "yes":
-                dish['dishAvailability'] = "no"
-            else:
-                dish['dishAvailability'] = "yes"
-    
-    
-    with open('menu.json', 'w') as menu_file:
-        json.dump(menu_data, menu_file, indent=4)
-    
-    return render(request, 'dishupdate.html', {'dishId': dishId})
+    return redirect('menu_list')
 
 
 def order_list(request):
@@ -96,33 +73,31 @@ def order_list(request):
 def take_order(request):
     if request.method == 'POST':
         CustomerName = request.POST['CustomerName']
-        dishId = request.POST.getlist('dishId')
+        dishId = request.POST['dishId']
         
-        # Check if dishes are available
+        # Check if the selected dish is available
         with open('menu.json') as menu_file:
             menu_data = json.load(menu_file)
         
-        unavailable_dishes = [dish for dish in menu_data if dish['dishId'] in dishId and dish['dishAvailability'] == 'no']
+        selected_dish = None
+        for dish in menu_data:
+            if dish['dishId'] == dishId and dish['dishAvailability'] == 'yes':
+                selected_dish = dish
+                break
         
-        if unavailable_dishes:
-            return render(request, 'order_unavailable.html', {'unavailable_dishes': unavailable_dishes})
+        if not selected_dish:
+            return render(request, 'order_unavailable.html', {'unavailable_dishes': [dishId]})
         
         # Process the order
         with open('order.json') as order_file:
             order_data = json.load(order_file)
   
-        item1 = None
-        for item in menu_data:
-         if item["dishId"] in dishId:
-           item1 = item
-           break
-     
         order_id = str(len(order_data) + 1)
         new_order = {
             'OrderId': order_id,
             'CustomerName': CustomerName,
-            'dishName': item1['dishName'],
-            'Price':item1["dishPrice"],
+            'dishName': selected_dish['dishName'],
+            'Price': selected_dish["dishPrice"],
             'Status': 'Preparing'
         }
         order_data.append(new_order)
@@ -130,7 +105,12 @@ def take_order(request):
         with open('order.json', 'w') as order_file:
             json.dump(order_data, order_file, indent=4)
 
-    return render(request, 'take_order.html')
+    with open('menu.json') as menu_file:
+        menu_data = json.load(menu_file)
+
+    return render(request, 'take_order.html', {'menu_data': menu_data})
+
+
 
 def update_order_status(request, OrderId):
     if request.method == 'POST':
@@ -141,20 +121,17 @@ def update_order_status(request, OrderId):
         
         order_found = False
         for order in order_data:
-            if order['OrderId'] == OrderId:
+            if order['OrderId'] == str(OrderId):
                 order['Status'] = new_status
                 order_found = True
                 break
-        
-        if not order_found:
-            return render(request, 'order_not_found.html', {'OrderId': OrderId})
         
         with open('order.json', 'w') as order_file:
             json.dump(order_data, order_file, indent=4)
     
         return redirect('order_list')
-    return render(request, 'updateStatus.html')
 
+    return render(request, 'order_list.html')  
 
 def filter(request, status):
     with open('order.json') as order_file:
@@ -162,4 +139,4 @@ def filter(request, status):
 
     updated_order_data = [order for order in order_data if order['Status'] == status]
 
-    return render(request, "filter_data.html", {'updated_order_data': updated_order_data})
+    return render(request, 'order_list.html', {'order_data': updated_order_data})

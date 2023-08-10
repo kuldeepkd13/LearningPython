@@ -4,17 +4,150 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Take Order</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('https://plus.unsplash.com/premium_photo-1687572821942-d6f30f6b125d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZGFya3xlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60'); /* Replace with your image path */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: #333;
+        }
+
+        /* Navigation Bar Styles */
+        .navbar {
+            background-color: #222;
+            padding: 10px 0;
+        }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+        }
+
+        .nav-list li {
+            margin: 0 20px;
+        }
+
+        .nav-list a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .nav-list a:hover {
+            color: #ffc107;
+        }
+
+        /* Form Styles */
+        .order-form {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"] {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        fieldset {
+            border: none;
+            margin-bottom: 20px;
+        }
+
+        legend {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        input[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <h2>Order Dish</h2>
-    <form method="post">
-        {% csrf_token %}
-        <label for="CustomerName">CustomerName:</label>
-        <input type="text" name="CustomerName"><br>
-        <label for="dishId">dishId:</label>
-        <input type="text" name="dishId"><br>
-        <input type="submit" value="Place Order">
-    </form>
-    {{item1}}
+    <nav class="navbar">
+        <ul class="nav-list">
+            <li><a href="{% url 'menu_list' %}">Menu List</a></li>
+            <li><a href="{% url 'order_list' %}">Order List</a></li>
+            <li><a href="{% url 'add_dish' %}">Add Dish</a></li>
+            <li><a href="{% url 'take_order' %}">Order Dish</a></li>
+        </ul>
+    </nav>
+
+    <div class="order-form">
+        <h2>Order Dish</h2>
+        <form method="post">
+            {% csrf_token %}
+            <label for="CustomerName">Customer Name:</label>
+            <input type="text" name="CustomerName" required>
+            <fieldset>
+                <legend>Select Dish:</legend>
+                {% for dish in menu_data %}
+                    {% if dish.dishAvailability == 'yes' %}
+                        <label class="radio-label">
+                            <input type="radio" name="dishId" value="{{ dish.dishId }}">
+                            {{ dish.dishName }} - ${{ dish.dishPrice }}
+                        </label>
+                    {% endif %}
+                {% endfor %}
+            </fieldset>
+            <input type="submit" value="Place Order">
+        </form>
+        {{ item1 }}
+    </div>
 </body>
 </html>

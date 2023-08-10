@@ -1,25 +1,194 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menu List</title>
+    <style>
+        /* Reset default margin and padding */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body and container styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('https://plus.unsplash.com/premium_photo-1687572821942-d6f30f6b125d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZGFya3xlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60'); /* Replace with your image path */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: #333;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Navigation bar styles */
+        .navbar {
+            background-color: #222;
+            padding: 10px 0;
+        }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+        }
+
+        .nav-list li {
+            margin: 0 20px;
+        }
+
+        .nav-list a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .nav-list a:hover {
+            color: #ffc107;
+        }
+
+        /* Menu item styles */
+        .menu-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        grid-gap: 20px;
+        justify-content: space-between;
+    }
+
+        .menu-item {
+            position: relative;
+            width: 100%;
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: white;
+            border: 1px solid #eee;
+            border-radius: 5px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            overflow: hidden;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .dish-image img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+
+        .dish-details {
+            margin-bottom: 10px;
+        }
+
+        .dish-name {
+            font-size: 20px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .dish-price {
+            font-size: 18px;
+            color: #28a745;
+            margin-right: 10px;
+        }
+
+        .availability-ribbon {
+            position: absolute;
+            top: 35px;
+            left: -15px;
+            padding: 0.5rem 1rem;
+            color: white;
+            font-size: 1rem;
+            font-weight: bold;
+            transform: translateY(-50%) rotate(-40deg);
+            z-index: 1;
+            white-space: nowrap;
+        }
+
+        .available .availability-ribbon {
+            background-color: #28a745;
+        }
+
+        .not-available .availability-ribbon {
+            background-color: #dc3545;
+        }
+
+        .action-form {
+            display: inline;
+        }
+
+        .remove-button,
+        .update-button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .remove-button:hover,
+        .update-button:hover {
+            background-color: #c82333;
+        }
+
+        .action-buttons {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+    </style>
 </head>
 <body>
-    <h1>Menu List</h1>
-    <table>
-        <tr>
-            <th>DishID</th>
-            <th>DishName</th>
-            <th>Price</th>
-            <th>DishAvailability</th>
-        </tr>
-        {% for dish in menu_data %}
-           <tr>
-            <td>{{ dish.dishId }}</td>
-            <td>{{dish.dishName}}</td>
-            <td>{{ dish.dishPrice }}</td>
-            <td>{{dish.dishAvailability}}</td>
-           </tr>
-        {% endfor %}
-    </table>
+    <nav class="navbar">
+        <ul class="nav-list">
+            <li><a href="{% url 'menu_list' %}">Menu List</a></li>
+            <li><a href="{% url 'order_list' %}">Order List</a></li>
+            <li><a href="{% url 'add_dish' %}">Add Dish</a></li>
+            <li><a href="{% url 'take_order' %}">Order Dish</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h1 style="color: white; margin-bottom: 30px;">Menu List</h1>
+        <div class="menu-container">
+            {% for dish in menu_data %}
+                <div class="menu-item {% if dish.dishAvailability == 'yes' %}available{% else %}not-available{% endif %}">
+                    <div class="availability-ribbon">
+                        {% if dish.dishAvailability == 'yes' %}Available{% else %}Not Available{% endif %}
+                    </div>
+                    <div class="dish-image">
+                        <img src="https://d1rgpf387mknul.cloudfront.net/products/PLP/web/2x_web_20220314070354323312_482x264jpg" alt="Dish Image">
+                    </div>
+                    <div class="dish-details">
+                        <span class="dish-name">{{ dish.dishName }}</span>
+                        <span class="dish-price">${{ dish.dishPrice }}</span>
+                    </div>
+                    <div class="action-buttons">
+                        <form method="post" action="{% url 'remove_dish' dish.dishId %}" class="action-form">
+                            {% csrf_token %}
+                            <button type="submit" class="remove-button">Remove</button>
+                        </form>
+                        <form method="post" action="{% url 'update_dish' dish.dishId %}" class="action-form">
+                            {% csrf_token %}
+                            <button type="submit" class="update-button">Toggle</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 </body>
 </html>

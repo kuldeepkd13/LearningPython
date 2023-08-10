@@ -4,14 +4,14 @@
         "CustomerName": "kd",
         "dishName": "Tea",
         "Price": 30.0,
-        "Status": "Ready for PickUp"
+        "Status": "Ready"
     },
     {
         "OrderId": "2",
         "CustomerName": "kuldeep",
         "dishName": "Samosa",
         "Price": 30.0,
-        "Status": "Ready for PickUp"
+        "Status": "Ready"
     },
     {
         "OrderId": "3",
@@ -32,6 +32,20 @@
         "CustomerName": "Rahul",
         "dishName": "Samosa",
         "Price": 30.0,
-        "Status": "Ready for PickUp"
+        "Status": "Ready"
+    },
+    {
+        "OrderId": "6",
+        "CustomerName": "rakhi",
+        "dishName": "Tea",
+        "Price": 15.0,
+        "Status": "Preparing"
+    },
+    {
+        "OrderId": "7",
+        "CustomerName": "raman",
+        "dishName": "Veg Whopper",
+        "Price": 129.0,
+        "Status": "Preparing"
     }
 ]

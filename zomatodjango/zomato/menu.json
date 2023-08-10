@@ -1,32 +1,32 @@
 [
     {
         "dishId": "1",
-        "dishName": "Samosa",
-        "dishPrice": 30.0,
+        "dishName": "Veg Whopper",
+        "dishPrice": 129.0,
         "dishAvailability": "yes"
     },
     {
         "dishId": "2",
-        "dishName": "Tea",
-        "dishPrice": 15.0,
-        "dishAvailability": "yes"
+        "dishName": "Maxican Veg Whopper",
+        "dishPrice": 150.0,
+        "dishAvailability": "no"
     },
     {
         "dishId": "3",
-        "dishName": "pasta",
-        "dishPrice": 70.0,
+        "dishName": "Cheese Veg Whopper ",
+        "dishPrice": 169.0,
         "dishAvailability": "yes"
     },
     {
         "dishId": "4",
-        "dishName": "pizza",
+        "dishName": "Chicken Whopper",
         "dishPrice": 399.0,
         "dishAvailability": "yes"
     },
     {
         "dishId": "5",
-        "dishName": "bear",
-        "dishPrice": 85.0,
-        "dishAvailability": "no"
+        "dishName": "Veg Dubble Whopper",
+        "dishPrice": 40.0,
+        "dishAvailability": "yes"
     }
 ]

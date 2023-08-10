@@ -4,20 +4,139 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Dish</title>
+    <style>
+        /* Reset default margin and padding */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body and form styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('https://plus.unsplash.com/premium_photo-1687572821942-d6f30f6b125d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZGFya3xlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60'); /* Replace with your image path */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: #333;
+        }
+        /* Navigation bar styles */
+        .navbar {
+            background-color: #222;
+            padding: 10px 0;
+        }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+        }
+
+        .nav-list li {
+            margin: 0 20px;
+        }
+
+        .nav-list a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .nav-list a:hover {
+            color: #ffc107;
+        }
+        .container {
+            width: 100%;
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        /* Form input styles */
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="radio"] {
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        input[type="radio"]:focus {
+            border-color: #28a745;
+        }
+
+        input[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-weight: bold;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <h2>Add Dish</h2>
-    <form method="post">
-        {% csrf_token %}
-        <label for="dishId">dishId:</label>
-        <input type="text" name="dishId"><br>
-        <label for="dishName">dishName:</label>
-        <input type="text" name="dishName"><br>
-        <label for="dishPrice">dishPrice:</label>
-        <input type="number" name="dishPrice"><br>
-        <label for="dishAvailability">dishAvailability:</label>
-        <input type="text" name="dishAvailability"><br>
-        <input type="submit" value="Add Dish">
-    </form>
+    <nav class="navbar">
+        <ul class="nav-list">
+            <li><a href="{% url 'menu_list' %}">Menu List</a></li>
+            <li><a href="{% url 'order_list' %}">Order List</a></li>
+            <li><a href="{% url 'add_dish' %}">Add Dish</a></li>
+            <li><a href="{% url 'take_order' %}">Order Dish</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h2>Add New Dish</h2>
+        <form method="post">
+            {% csrf_token %}
+            <label for="dishId">Dish ID</label>
+            <input type="text" name="dishId" required>
+            <label for="dishName">Dish Name</label>
+            <input type="text" name="dishName" required>
+            <label for="dishPrice">Dish Price</label>
+            <input type="number" name="dishPrice" required>
+            <label for="dishAvailability">Dish Availability</label>
+            <div>
+                <label>
+                    <input type="radio" name="dishAvailability" value="yes" required> Available
+                </label>
+                <label>
+                    <input type="radio" name="dishAvailability" value="no" required> Not Available
+                </label>
+            </div>
+            <input type="submit" value="Add Dish">
+        </form>
+    </div>
 </body>
 </html>

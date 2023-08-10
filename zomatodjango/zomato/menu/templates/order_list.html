@@ -3,10 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order </title>
+    <title>Order List</title>
+    <style>
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+            font-family: Arial, sans-serif;
+            background-image: url('https://plus.unsplash.com/premium_photo-1687572821942-d6f30f6b125d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZGFya3xlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60'); /* Replace with your image path */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: #333;
+        }
+
+/* Navigation Bar Styles */
+.navbar {
+    background-color: #222;
+    padding: 10px 0;
+}
+
+.nav-list {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+}
+
+.nav-list li {
+    margin: 0 20px;
+}
+
+.nav-list a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.nav-list a:hover {
+    color: #ffc107;
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    
+    background-color: #f7f7f7
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+h1{
+    color: white;
+    margin: 20px;
+}
+/* Update Button Styles */
+button {
+    padding: 8px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    
+}
+
+select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+input[type="submit"] {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 600px) {
+    .nav-list {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .nav-list li {
+        margin: 10px 0;
+    }
+}
+
+    </style>
 </head>
 <body>
+    <nav class="navbar">
+        <ul class="nav-list">
+            <li><a href="{% url 'menu_list' %}">Menu List</a></li>
+            <li><a href="{% url 'order_list' %}">Order List</a></li>
+            <li><a href="{% url 'add_dish' %}">Add Dish</a></li>
+            <li><a href="{% url 'take_order' %}">Order Dish</a></li>
+        </ul>
+    </nav>
+    
     <h1>Order List</h1>
+    <div class="filter-container">
+        <label for="status" style="color: white; margin-left: 20px;">Filter by Status:</label>
+        <select id="status" name="status" onchange="filterOrders()">
+            <option value="">All</option>
+            <option value="Preparing">Preparing</option>
+            <option value="Cooking">Cooking</option>
+            <option value="Ready">Ready</option>
+            <option value="Delivered">Delivered</option>
+        </select>
+    </div>
     <table>
         <tr>
             <th>OrderID</th>
@@ -14,16 +183,59 @@
             <th>DishName</th>
             <th>Price</th>
             <th>OrderStatus</th>
+            <th>Update Status</th>
         </tr>
-        {% for dish in order_data %}
+        {% for order in order_data %}
            <tr>
-            <td>{{ dish.OrderId }}</td>
-            <td>{{dish.CustomerName}}</td>
-            <td>{{dish.dishName}}</td>
-            <td>{{ dish.Price }}</td>
-            <td>{{dish.Status}}</td>
+            <td>{{ order.OrderId }}</td>
+            <td>{{ order.CustomerName }}</td>
+            <td>{{ order.dishName }}</td>
+            <td>{{ order.Price }}</td>
+            <td>{{ order.Status }}</td>
+            <td>
+                <button onclick="openUpdateModal('{{ order.OrderId }}')">Update</button>
+            </td>
            </tr>
         {% endfor %}
     </table>
+
+    <!-- Update Status Modal -->
+    <div id="updateModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeUpdateModal()"> &times;</span>
+            <h2>Update Order Status</h2>
+            <form method="post" id="updateStatusForm" >
+                {% csrf_token %}
+                <label for="status">New Status:</label>
+                <select name="status">
+                    <option value="Preparing">Preparing</option>
+                    <option value="Cooking">Cooking</option>
+                    <option value="Ready">Ready</option>
+                    <option value="Delivered">Delivered</option>
+                </select>
+                <input type="submit" value="Update">
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript functions for modal and filter
+        function openUpdateModal(orderId) {
+            const modal = document.getElementById('updateModal');
+            modal.style.display = 'block';
+            const form = document.getElementById('updateStatusForm');
+            form.action = `/order/UpdateStatus/${orderId}`;
+        }
+
+        function closeUpdateModal() {
+            const modal = document.getElementById('updateModal');
+            modal.style.display = 'none';
+        }
+
+        function filterOrders() {
+            const status = document.getElementById('status').value;
+            window.location.href = `/order/filter/${status}`;
+        }
+    </script>
 </body>
 </html>
