@@ -45,4 +45,44 @@ VALUES
 
 - **Prerequisite**: Understand how to use NULL checks in SQL / MongoDB
 - **Problem**: Write a query to fetch all restaurants where the **`cuisine_type`** field is not set or is null.
-- **Answer** : 
+- **Answer** :  SELECT * FROM restaurants WHERE cuisine_type IS NULL OR cuisine_type = '';
+
+
+**Problem 21:**
+
+- **Prerequisite**: Understand how to count rows / documents in SQL / MongoDB
+- **Problem**: Write a query to count the number of restaurants that have **`delivery_available`**.
+
+- **Answer** :SELECT COUNT(*) AS restaurant_count
+FROM restaurants
+WHERE delivery_available = 1;
+
+
+**Problem 22:**
+
+- **Prerequisite**: Understand using string patterns in SQL (LIKE clause) / using regex in MongoDB
+- **Problem**: Write a query to fetch all restaurants whose **`location`** contains 'New York'.
+- **Answer** : SELECT * FROM restaurants WHERE location LIKE '%New York%';
+
+
+**Problem 23:**
+
+- **Prerequisite**: Understand how to use the AVG function in SQL / MongoDB's aggregate functions
+- **Problem**: Write a query to calculate the average **`average_rating`** of all restaurants.
+
+- **Answer** : SELECT AVG(average_rating) AS avg_rating FROM restaurants;
+
+
+**Problem 24:**
+
+- **Prerequisite**: Understand how to limit results in SQL / MongoDB
+- **Problem**: Write a query to fetch the top 5 restaurants when ordered by **`average_rating`** in descending order.
+- **Answer** : SELECT * FROM restaurants ORDER BY average_rating DESC LIMIT 5;
+
+
+**Problem 25:**
+
+- **Prerequisite**: Understand data deletion in SQL / MongoDB
+- **Problem**: Write a query to delete the restaurant with **`id`** 3.
+
+- **Answer** : DELETE FROM restaurants WHERE id = 3;
