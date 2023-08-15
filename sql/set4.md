@@ -69,4 +69,4 @@ INNER JOIN Passengers p ON r.passenger_id = p.passenger_id;
 
 - **Prerequisite**: Understand how to alter table schemas in SQL / adding and modifying fields in MongoDB documents
 - **Problem**: Write a query to add a **`tip`** field to the **`Rides`** table / collection.
-- **Answer** :ALTER TABLE Rides ADD COLUMN tip DECIMAL(10, 2);
+- **Answer** :ALTER TABLE Rides ADD COLUMN tip DECIMAL(10, 2); 
