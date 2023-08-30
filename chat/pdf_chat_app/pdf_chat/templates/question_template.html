@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Question and Answer</title>
+</head>
+<body>
+    <h1>Uploaded Text:</h1>
+    <pre>{{ text }}</pre>
+    
+    <h2>Ask a Question:</h2>
+    <form id="question-form">
+        {% csrf_token %}
+        <input type="hidden" name="text" value="{{ text }}">
+        <label for="query">Question:</label>
+        <input type="text" id="query" name="query">
+        <button type="submit">Submit</button>
+    </form>
+    
+    <h2>Response:</h2>
+    <div id="response"></div>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $('#question-form').on('submit', function(event) {
+            event.preventDefault();
+            var form_data = $(this).serialize();
+            $.ajax({
+                type: 'POST',
+                url: '{% url "question" %}',
+                data: form_data,
+                success: function(response) {
+                    $('#response').html(response.response);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
