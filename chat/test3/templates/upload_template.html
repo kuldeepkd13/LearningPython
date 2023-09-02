@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload PDF</title>
+</head>
+<body>
+    <h1>Upload a PDF File</h1>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Upload">
+    </form>
+    {% if pdf_name %}
+    <p>PDF Uploaded: {{ pdf_name }}</p>
+    <a href="{% url 'chat' %}?pdf_name={{ pdf_name }}">Proceed to Chat</a>
+    {% endif %}
+</body>
+</html>

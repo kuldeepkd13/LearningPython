@@ -1,14 +1,80 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <head>
     <title>Upload PDF</title>
 </head>
 <body>
-    <h1>Upload a PDF</h1>
-    <form method="post" enctype="multipart/form-data">
+    <h1>Upload a PDF File</h1>
+    <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Upload PDF</button>
+        <input type="submit" value="Upload">
     </form>
+    {% if pdf_name %}
+    <p>PDF Uploaded: {{ pdf_name }}</p>
+    <a href="{% url 'chat' %}?pdf_name={{ pdf_name }}">Start Chat</a>
+    {% endif %}
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload PDF</title>
+    <style>
+        /* Your existing styles here */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+<body>
+    <h1>Upload a PDF File</h1>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Upload">
+    </form>
+    
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <p id="pdfUploaded" style="display: none;">PDF Uploaded: {{ pdf_name }}</p>
+            <p id="startChatLink" style="display: none;"><a href="{% url 'chat' %}?pdf_name={{ pdf_name }}">Start Chat</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Display the modal when pdf_name is available
+        var pdf_name = "{{ pdf_name }}";  // Use Django template tag to get the value
+        
+        if (pdf_name) {
+            var modal = document.getElementById('myModal');
+            modal.style.display = "block";
+            
+            var pdfUploaded = document.getElementById('pdfUploaded');
+            var startChatLink = document.getElementById('startChatLink');
+            
+            pdfUploaded.style.display = "block";
+            startChatLink.style.display = "block";
+        }
+    </script>
 </body>
 </html>
+
